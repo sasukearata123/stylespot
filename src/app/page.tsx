@@ -56,10 +56,7 @@ export default function Home() {
     price: 0,
   });
   const [sortBy, setSortBy] = useState(sortOptions[0].value);
-  const [filters, setFilters] = useState({
-    freeShipping: false,
-    inStock: false,
-  });
+
   const { toast } = useToast();
 
   const handleAddItem = () => {
@@ -109,16 +106,6 @@ export default function Home() {
     }
   });
 
-  const filteredItems = sortedItems.filter((item) => {
-    if (filters.freeShipping && item.price > 50) {
-      return false;
-    }
-    if (filters.inStock && item.price === 0) {
-      return false;
-    }
-    return true;
-  });
-
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
@@ -130,7 +117,6 @@ export default function Home() {
           <DialogTrigger asChild>
             <Button
               variant="accent"
-              onClick={() => setIsAddItemOpen(true)}
               className="rounded-full"
             >
               <Icons.plusCircle className="w-4 h-4 mr-2" />
@@ -225,41 +211,11 @@ export default function Home() {
             ))}
           </SelectContent>
         </Select>
-
-        {/* Filtering */}
-        <div className="flex items-center space-x-4">
-          <Label
-            htmlFor="freeShipping"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Free Shipping
-          </Label>
-          <Switch
-            id="freeShipping"
-            checked={filters.freeShipping}
-            onCheckedChange={(checked) =>
-              setFilters({ ...filters, freeShipping: checked })
-            }
-          />
-          <Label
-            htmlFor="inStock"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            In Stock
-          </Label>
-          <Switch
-            id="inStock"
-            checked={filters.inStock}
-            onCheckedChange={(checked) =>
-              setFilters({ ...filters, inStock: checked })
-            }
-          />
-        </div>
       </div>
 
       {/* Marketplace Display */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredItems.map((item) => (
+        {sortedItems.map((item) => (
           <Card
             key={item.id}
             className="rounded-lg shadow-md transition-transform hover:scale-105"
@@ -275,7 +231,7 @@ export default function Home() {
               />
               <CardDescription>{item.description}</CardDescription>
               <p className="text-lg font-semibold mt-2 text-primary">
-                ${Number(item.price).toFixed(2)}
+                ${item.price}
               </p>
             </CardContent>
           </Card>
