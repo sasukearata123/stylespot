@@ -127,86 +127,88 @@ export default function Home() {
         </h1>
         {/* Add Item Button */}
         <Dialog open={isAddItemOpen} onOpenChange={setIsAddItemOpen}>
-          <Button
-            variant="accent"
-            onClick={() => setIsAddItemOpen(true)}
-            className="rounded-full"
-          >
-            <Icons.plusCircle className="w-4 h-4 mr-2" />
-            Add Item
-          </Button>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="text-primary">
-              Add a New Fashion Item
-            </DialogTitle>
-            <DialogDescription>
-              Fill in the details below to add a new item to the marketplace.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input
-                type="text"
-                id="name"
-                name="name"
-                value={newItem.name}
-                onChange={handleInputChange}
-                className="col-span-3"
-              />
+          <DialogTrigger asChild>
+            <Button
+              variant="accent"
+              onClick={() => setIsAddItemOpen(true)}
+              className="rounded-full"
+            >
+              <Icons.plusCircle className="w-4 h-4 mr-2" />
+              Add Item
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle className="text-primary">
+                Add a New Fashion Item
+              </DialogTitle>
+              <DialogDescription>
+                Fill in the details below to add a new item to the marketplace.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Name
+                </Label>
+                <Input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={newItem.name}
+                  onChange={handleInputChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="description" className="text-right">
+                  Description
+                </Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  value={newItem.description}
+                  onChange={handleInputChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="imageUrl" className="text-right">
+                  Image URL
+                </Label>
+                <Input
+                  type="text"
+                  id="imageUrl"
+                  name="imageUrl"
+                  value={newItem.imageUrl}
+                  onChange={handleInputChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="price" className="text-right">
+                  Price
+                </Label>
+                <Input
+                  type="number"
+                  id="price"
+                  name="price"
+                  value={newItem.price}
+                  onChange={handleInputChange}
+                  className="col-span-3"
+                />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">
-                Description
-              </Label>
-              <Textarea
-                id="description"
-                name="description"
-                value={newItem.description}
-                onChange={handleInputChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="imageUrl" className="text-right">
-                Image URL
-              </Label>
-              <Input
-                type="text"
-                id="imageUrl"
-                name="imageUrl"
-                value={newItem.imageUrl}
-                onChange={handleInputChange}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="price" className="text-right">
-                Price
-              </Label>
-              <Input
-                type="number"
-                id="price"
-                name="price"
-                value={newItem.price}
-                onChange={handleInputChange}
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <Button
-            type="submit"
-            onClick={handleAddItem}
-            variant="accent"
-            className="rounded-full"
-          >
-            Add Item
-          </Button>
-        </DialogContent>
-      </Dialog>
+            <Button
+              type="submit"
+              onClick={handleAddItem}
+              variant="accent"
+              className="rounded-full"
+            >
+              Add Item
+            </Button>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="flex justify-between items-center mb-4">
@@ -273,7 +275,7 @@ export default function Home() {
               />
               <CardDescription>{item.description}</CardDescription>
               <p className="text-lg font-semibold mt-2 text-primary">
-                ${item.price.toFixed(2)}
+                ${Number(item.price).toFixed(2)}
               </p>
             </CardContent>
           </Card>
