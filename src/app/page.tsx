@@ -19,7 +19,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -29,7 +28,6 @@ import {
 } from "@/components/ui/select";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 
 interface FashionItem {
@@ -56,6 +54,7 @@ export default function Home() {
     price: 0,
   });
   const [sortBy, setSortBy] = useState(sortOptions[0].value);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { toast } = useToast();
 
@@ -102,9 +101,18 @@ export default function Home() {
     } else if (sortBy === "price_desc") {
       return b.price - a.price;
     } else {
-      return Date.parse(b.id) - Date.parse(a.id);
+      // Ensure the 'newest' sort is working correctly by comparing item IDs directly as strings
+      return parseInt(b.id, 10) - parseInt(a.id, 10);
     }
   });
+
+  const filteredItems = sortedItems.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <div className="container mx-auto py-10">
@@ -115,10 +123,7 @@ export default function Home() {
         {/* Add Item Button */}
         <Dialog open={isAddItemOpen} onOpenChange={setIsAddItemOpen}>
           <DialogTrigger asChild>
-            <Button
-              variant="accent"
-              className="rounded-full"
-            >
+            <Button variant="accent" className="rounded-full">
               <Icons.plusCircle className="w-4 h-4 mr-2" />
               Add Item
             </Button>
@@ -211,11 +216,29 @@ export default function Home() {
             ))}
           </SelectContent>
         </Select>
+
+        {/* Search */}
+        <div className="relative flex items-center">
+          <Input
+            type="text"
+            placeholder="Search items..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="pr-10" // Adjusted padding to accommodate the search icon
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-1.5 top-1/2 transform -translate-y-1/2 rounded-full"
+          >
+            <Icons.search className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Marketplace Display */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {sortedItems.map((item) => (
+        {filteredItems.map((item) => (
           <Card
             key={item.id}
             className="rounded-lg shadow-md transition-transform hover:scale-105"
@@ -231,7 +254,7 @@ export default function Home() {
               />
               <CardDescription>{item.description}</CardDescription>
               <p className="text-lg font-semibold mt-2 text-primary">
-                ${item.price}
+                ${item.price.toFixed(2)}
               </p>
             </CardContent>
           </Card>
