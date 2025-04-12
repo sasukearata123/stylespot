@@ -8,7 +8,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger, // Corrected import statement
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,6 +30,7 @@ import {
 import { Icons } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 interface FashionItem {
   id: string;
@@ -125,92 +125,16 @@ export default function Home() {
         <h1 className="text-2xl font-bold text-primary">
           StyleSpot Marketplace
         </h1>
-        <Button
-          variant="accent"
-          onClick={() => setIsAddItemOpen(true)}
-          className="rounded-full"
-        >
-          <Icons.plusCircle className="w-4 h-4 mr-2" />
-          Add Item
-        </Button>
-      </div>
-
-      <div className="flex justify-between items-center mb-4">
-        {/* Sorting */}
-        <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            {sortOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Filtering */}
-        <div className="flex items-center space-x-4">
-          <Label
-            htmlFor="freeShipping"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        {/* Add Item Button */}
+        <Dialog open={isAddItemOpen} onOpenChange={setIsAddItemOpen}>
+          <Button
+            variant="accent"
+            onClick={() => setIsAddItemOpen(true)}
+            className="rounded-full"
           >
-            Free Shipping
-          </Label>
-          <Switch
-            id="freeShipping"
-            checked={filters.freeShipping}
-            onCheckedChange={(checked) =>
-              setFilters({ ...filters, freeShipping: checked })
-            }
-          />
-          <Label
-            htmlFor="inStock"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            In Stock
-          </Label>
-          <Switch
-            id="inStock"
-            checked={filters.inStock}
-            onCheckedChange={(checked) =>
-              setFilters({ ...filters, inStock: checked })
-            }
-          />
-        </div>
-      </div>
-
-      {/* Marketplace Display */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredItems.map((item) => (
-          <Card
-            key={item.id}
-            className="rounded-lg shadow-md transition-transform hover:scale-105"
-          >
-            <CardHeader>
-              <CardTitle className="text-primary">{item.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <img
-                src={item.imageUrl}
-                alt={item.name}
-                className="rounded-md mb-4 w-full h-48 object-cover"
-              />
-              <CardDescription>{item.description}</CardDescription>
-              <p className="text-lg font-semibold mt-2 text-primary">
-                ${item.price.toFixed(2)}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Add Item Dialog */}
-      <Dialog open={isAddItemOpen} onOpenChange={setIsAddItemOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Add Item</Button>
-        </DialogTrigger>
+            <Icons.plusCircle className="w-4 h-4 mr-2" />
+            Add Item
+          </Button>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle className="text-primary">
@@ -283,6 +207,78 @@ export default function Home() {
           </Button>
         </DialogContent>
       </Dialog>
+      </div>
+
+      <div className="flex justify-between items-center mb-4">
+        {/* Sorting */}
+        <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            {sortOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* Filtering */}
+        <div className="flex items-center space-x-4">
+          <Label
+            htmlFor="freeShipping"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Free Shipping
+          </Label>
+          <Switch
+            id="freeShipping"
+            checked={filters.freeShipping}
+            onCheckedChange={(checked) =>
+              setFilters({ ...filters, freeShipping: checked })
+            }
+          />
+          <Label
+            htmlFor="inStock"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            In Stock
+          </Label>
+          <Switch
+            id="inStock"
+            checked={filters.inStock}
+            onCheckedChange={(checked) =>
+              setFilters({ ...filters, inStock: checked })
+            }
+          />
+        </div>
+      </div>
+
+      {/* Marketplace Display */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredItems.map((item) => (
+          <Card
+            key={item.id}
+            className="rounded-lg shadow-md transition-transform hover:scale-105"
+          >
+            <CardHeader>
+              <CardTitle className="text-primary">{item.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                className="rounded-md mb-4 w-full h-48 object-cover"
+              />
+              <CardDescription>{item.description}</CardDescription>
+              <p className="text-lg font-semibold mt-2 text-primary">
+                ${item.price.toFixed(2)}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

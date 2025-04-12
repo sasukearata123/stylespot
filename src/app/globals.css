@@ -9,19 +9,19 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 0 0% 98%; /* Neutral white or light gray */
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 259 73% 59%;
+    --primary: 190 70% 50%;  /* Soft pastel blue or green */
     --primary-foreground: 0 0% 98%;
     --secondary: 142 42% 94%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 16 100% 62%;
+    --accent: 16 100% 62%;  /* Coral (#FF7F50) */
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -50,7 +50,7 @@ body {
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 259 73% 59%;
+    --primary: 190 70% 50%;
     --primary-foreground: 0 0% 9%;
     --secondary: 140 24% 13%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -87,4 +87,5 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
 
