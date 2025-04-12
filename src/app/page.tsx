@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
-import { DialogTrigger } from "@radix-ui/react-dialog";
+import { DialogTrigger } from "@/components/ui/dialog";
 
 interface FashionItem {
   id: string;
@@ -254,7 +254,7 @@ export default function Home() {
               />
               <CardDescription>{item.description}</CardDescription>
               <p className="text-lg font-semibold mt-2 text-primary">
-                ${item.price.toFixed(2)}
+                ${typeof item.price === 'number' ? item.price.toFixed(2) : '0.00'}
               </p>
             </CardContent>
           </Card>
