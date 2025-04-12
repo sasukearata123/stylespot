@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -9,16 +8,18 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
 import {
   Select,
   SelectContent,
@@ -26,10 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
-import { suggestItemTags } from "@/ai/flows/suggest-item-tags";
 import { useEffect } from "react";
 
 interface FashionItem {
@@ -60,7 +59,6 @@ export default function Home() {
     freeShipping: false,
     inStock: false,
   });
-  const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
   const { toast } = useToast();
 
   const handleAddItem = () => {
@@ -100,20 +98,6 @@ export default function Home() {
     setNewItem({ ...newItem, [name]: value });
   };
 
-  const getSuggestedTags = async () => {
-    if (newItem.description && newItem.imageUrl) {
-      const tags = await suggestItemTags({
-        description: newItem.description,
-        imageUrl: newItem.imageUrl,
-      });
-      setSuggestedTags(tags.tags);
-    }
-  };
-
-  useEffect(() => {
-    getSuggestedTags();
-  }, [newItem.description, newItem.imageUrl]);
-
   const sortedItems = [...items].sort((a, b) => {
     if (sortBy === "price_asc") {
       return a.price - b.price;
@@ -137,7 +121,9 @@ export default function Home() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">StyleSpot Marketplace</h1>
+        <h1 className="text-2xl font-bold text-primary">
+          StyleSpot Marketplace
+        </h1>
         <Button
           variant="accent"
           onClick={() => setIsAddItemOpen(true)}
@@ -165,7 +151,10 @@ export default function Home() {
 
         {/* Filtering */}
         <div className="flex items-center space-x-4">
-          <Label htmlFor="freeShipping" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          <Label
+            htmlFor="freeShipping"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
             Free Shipping
           </Label>
           <Switch
@@ -175,7 +164,10 @@ export default function Home() {
               setFilters({ ...filters, freeShipping: checked })
             }
           />
-          <Label htmlFor="inStock" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          <Label
+            htmlFor="inStock"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
             In Stock
           </Label>
           <Switch
@@ -191,9 +183,12 @@ export default function Home() {
       {/* Marketplace Display */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredItems.map((item) => (
-          <Card key={item.id} className="rounded-lg shadow-md transition-transform hover:scale-105">
+          <Card
+            key={item.id}
+            className="rounded-lg shadow-md transition-transform hover:scale-105"
+          >
             <CardHeader>
-              <CardTitle>{item.name}</CardTitle>
+              <CardTitle className="text-primary">{item.name}</CardTitle>
             </CardHeader>
             <CardContent>
               <img
@@ -202,7 +197,9 @@ export default function Home() {
                 className="rounded-md mb-4 w-full h-48 object-cover"
               />
               <CardDescription>{item.description}</CardDescription>
-              <p className="text-lg font-semibold mt-2">${item.price.toFixed(2)}</p>
+              <p className="text-lg font-semibold mt-2 text-primary">
+                ${item.price.toFixed(2)}
+              </p>
             </CardContent>
           </Card>
         ))}
@@ -215,7 +212,9 @@ export default function Home() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Add a New Fashion Item</DialogTitle>
+            <DialogTitle className="text-primary">
+              Add a New Fashion Item
+            </DialogTitle>
             <DialogDescription>
               Fill in the details below to add a new item to the marketplace.
             </DialogDescription>
@@ -273,17 +272,12 @@ export default function Home() {
               />
             </div>
           </div>
-          <div className="flex flex-col space-y-2">
-            <Label>Suggested Tags</Label>
-            <ScrollArea className="h-24 rounded-md border p-2">
-              <div className="flex flex-wrap gap-1">
-                {suggestedTags.map((tag) => (
-                  <Badge key={tag}>{tag}</Badge>
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
-          <Button type="submit" onClick={handleAddItem} variant="accent" className="rounded-full">
+          <Button
+            type="submit"
+            onClick={handleAddItem}
+            variant="accent"
+            className="rounded-full"
+          >
             Add Item
           </Button>
         </DialogContent>
