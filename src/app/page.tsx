@@ -226,7 +226,7 @@ export default function Home() {
             onChange={handleSearchChange}
             className="pr-10" // Adjusted padding to accommodate the search icon
           />
-          <Button
+           <Button
             variant="ghost"
             size="icon"
             className="absolute right-1.5 top-1/2 transform -translate-y-1/2 rounded-full"
